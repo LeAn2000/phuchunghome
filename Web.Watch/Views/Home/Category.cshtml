@@ -1,0 +1,96 @@
+﻿@using Web.Core.Dto;
+@model MenuDto
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div class="container-fluid bg-secondary">
+    <div class="d-flex flex-column align-items-center  justify-content-center" style="min-height: 80px">
+
+        <div class="d-inline-flex">
+            <p class="m-0 "><a href="/" class="text-danger">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0"> @Model.Name</p>
+        </div>
+    </div>
+</div>
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        @*<div class="col-lg-3 col-md-12">
+
+            </div>*@
+        <!-- Shop Sidebar End -->
+        <!-- Shop Product Start -->
+        <div class="col-lg-12 col-md-12">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                     
+                    </div>
+                </div>
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                        @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                    </div>
+                }
+
+
+                @if (ViewBag.TotalPage > 0)
+                {
+                    var pageDisplay = (int)ViewBag.maxPage;
+                    int totalPage = (int)ViewBag.TotalPage;
+                    int curPage = ((int)ViewBag.Page);
+
+                    var startPageIndex = Math.Max(1, curPage - pageDisplay / 2);
+                    var endPageIndex = Math.Min(totalPage, curPage + pageDisplay / 2);
+
+                    var link = "/" + Model.Alias;
+
+                    <div class="col-12 pb-1 mt-5">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mb-3">
+                                @if (curPage > ViewBag.First)
+                                {
+                                    <li class="page-item"> <a href="@link?page=@ViewBag.First" title="Trang dau" class="page-link"><i class="fa fa-angle-double-left"></i></a></li>
+
+                                    <li class="page-item"><a href="@link?page=@ViewBag.Prev" title="Trang truoc" class="page-link"><i class="fa fa-angle-left"></i></a></li>
+                                }
+                                @for (int i = startPageIndex; i <= endPageIndex; i++)
+                                {
+                                    if (curPage == i)
+                                    {
+                                        <li class="page-item active"> <a href="@link?page=@i" class="page-link" title="Trang @i">@i</a></li>
+
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a href="@link?page=@i" title="Trang @i" class="page-link">@i</a></li>
+                                    }
+                                }
+                                @if (curPage < totalPage)
+                                {
+
+                                    <li class="page-item"> <a href="@link?page=@ViewBag.Last" title="Trang cuoi" class="page-link"><i class="fa fa-angle-right"></i></a></li>
+                                    <li class="page-item"><a href="@link?page=@ViewBag.Next" title="Trang sau" class="page-link"><i class="fa fa-angle-double-right"></i></a></li>
+
+
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+
+                }
+                else
+                {
+
+                    <span>Không có sản phẩm nào</span>
+                }
+
+
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>

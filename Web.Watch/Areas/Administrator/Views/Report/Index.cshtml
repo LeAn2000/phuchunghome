@@ -1,0 +1,129 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model List<OrderDto>
+@{
+    ViewBag.Title = "Báo cáo tổng hợp";
+}
+
+<script>
+    $("#menu_report").addClass("menu_active");
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="~/Areas/Administrator/Plugins/bower_components/moment/min/moment.min.js"></script>
+<script src="~/Areas/Administrator/Plugins/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<link href="~/Areas/Administrator/Plugins/bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+<script src="~/Areas/Administrator/Plugins/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Báo cáo</h6>
+        </div>
+        <div class="row container mt-3">
+            <div class="col-md-4 ">
+                <div class="form-group">
+                    <label>Ngày đặt hàng</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                        <input type="text" class="form-control pull-right input-sm" id="reservation">
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Địa chỉ liên hệ</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Địa chỉ liên hệ</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="/Administrator/Order/Update?id=@item.Id">@item.Id</a>
+                                </td>
+                                <td class="text-nowrap">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
+                                <td>@(item.Customer.FullName)</td>
+                                <td>@(item.Customer.PhoneNumber)</td>
+                                <td>@(item.Customer.Email)</td>
+                                <td>@(item.Customer.Address)</td>
+                                <td class="text-right">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                <td class="text-center">
+                                    @if (item.Status == 10)
+                                    {
+                                        <span class="badge rounded-pill bg-warning text-dark"> Chưa thanh toán</span>
+                                    }
+                                    else if (item.Status == 20)
+                                    {
+                                        <span class="badge rounded-pill bg-success ">Đã thanh toán</span>
+
+                                    }
+                                    else if (item.Status == 30)
+                                    {
+                                        <span class="badge rounded-pill bg-danger">Đã hủy</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right">Tổng tiền</td>
+                            <td class="text-right">
+                                <strong>@(DataHelper.ToCurrency(Model.Sum(x=>x.TotalAmount)))</strong>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script>
+    $(function () {
+        $('#reservation').daterangepicker({
+            showDropdowns: true,
+            startDate: moment('@(((DateTime)ViewBag.startDate).ToString("yyyy-MM-dd"))'),
+            endDate:moment('@(((DateTime)ViewBag.toDate).ToString("yyyy-MM-dd"))'),
+            locale: {
+                format: 'DD-MM-YYYY'
+            },
+            opens: 'right'
+        }, function (start, end, label) {
+            location.href = `/Administrator/Report?startDate=${start.format("YYYY-MM-DD")}&toDate=${end.format("YYYY-MM-DD")}`;
+        })
+    });
+</script>

@@ -1,0 +1,93 @@
+﻿@using Web.Core.Dto;
+@model WebsiteDto
+@using Web.Watch.Service;
+
+@{
+    List<MenuDto> menus = UtilService.GetMenus();
+    List<ArticleDto> articles = UtilService.GetArticle();
+}
+
+<link href="~/Plugins/Bootrapnew/styleCustom.css" rel="stylesheet" />
+
+<div class="container-fluid" style="background: #dc3545; padding-top: 7px;">
+    <div class="row border-top px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="navbar1">
+                <div class="dropdown1">
+                    <button class="dropbtn1">
+                        Danh sách sản phẩm
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content1" style="z-index:1000000000">
+                        @foreach (var menu in menus)
+                        {
+                            if (menu.SubMenus == null || menu.SubMenus.Count == 0)
+                            {
+                                <a href="/@menu.Alias"><img src="@menu.Image" /> @menu.Name</a>
+                            }
+                            else
+                            {
+
+                                <div class="dropdown-sub1">
+                                    <a href="/@menu.Alias"><img src="@menu.Image" /> @menu.Name <i class="fa fa-caret-right"></i></a>
+                                    <div class="dropdown-content-sub1">
+
+                                        <ul class="list clearfix">
+                                            @foreach (var item in menu.SubMenus)
+                                            {
+                                                <li>
+                                                    <a href="/@item.Alias"> @item.Name</a>
+                                                </li>
+
+                                            }
+
+
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-9">
+            <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0" id="hihi">
+                <a href="/" class="text-decoration-none" id="logo">
+                    <img src="@Model.Logo" class="img-fluid mb-2" alt="LOGO" />
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav mr-auto py-0" id="respon">
+                        @foreach (var menu in menus)
+                        {
+                            if (menu.SubMenus == null || menu.SubMenus.Count == 0)
+                            {
+                                <a href="/@menu.Alias" class="nav-item nav-link">@menu.Name</a>
+                            }
+                            else
+                            {
+                                <div class="nav-item dropdown">
+                                    <a href="/@menu.Alias" class="nav-link dropdown-toggle" data-toggle="dropdown">@menu.Name</a>
+                                    <div class="dropdown-menu rounded-0 m-0">
+                                        @foreach (var item in menu.SubMenus)
+                                        {
+                                            <a href="/@item.Alias" class="dropdown-item">@item.Name</a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+

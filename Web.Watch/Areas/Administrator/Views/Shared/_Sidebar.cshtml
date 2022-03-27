@@ -1,0 +1,121 @@
+﻿<script src="~/Areas/Administrator/Plugins/Bootrapnew/vendor/jquery/jquery.min.js"></script>
+<ul class="navbar-nav bg-danger sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/Admin">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fa-solid fa-p"></i>
+            <i class="fa-solid fa-c"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">PHÚ CHUNG HOME</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="/Administrator/Dashboard">
+
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+
+            <span>Tổng quan</span>
+        </a>
+    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        Hàng hóa
+    </div>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="/Administrator/Order">
+            <i class="fa-solid fa-dolly"></i>
+            <span>Đơn hàng</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+           aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fa fa-cubes"></i>
+            <span>Sản phẩm</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh mục</h6>
+                <a class="collapse-item" href="/Administrator/Product">Danh sách sản phẩm</a>
+                <a class="collapse-item" href="/Administrator/Menu">Danh mục loại sản phẩm</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Thông tin nổi bật
+    </div>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="/Administrator/Gallery">
+            <i class="fa-solid fa-photo-film"></i>
+            <span>Bộ sưu tầm</span>
+        </a>
+    </li>
+    <!-- Nav Item - Charts -->
+    <li class="nav-item">
+        <a class="nav-link" href="/Administrator/Article">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Bài viết</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        Kinh doanh
+    </div>
+    <!-- Nav Item - Tables -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Báo cáo thống kê</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Danh mục</h6>
+                <a class="collapse-item" href="/Administrator/Report">Báo cáo tổng hợp</a>
+                <a class="collapse-item" href="/Administrator/Report/GetRevenueReport">Báo cáo doanh thu</a>
+            </div>
+        </div>
+    </li>
+
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Cấu hình
+    </div>
+    <li class="nav-item">
+        <a class="nav-link" href="/Administrator/Website">
+            <i class="fa-solid fa-globe"></i>
+            <span>Thông tin Website</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/Administrator/User">
+            <i class="fa-solid fa-users-gear"></i>
+            <span>Tài khoản quản trị</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>

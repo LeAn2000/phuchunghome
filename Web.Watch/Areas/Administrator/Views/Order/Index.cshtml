@@ -1,0 +1,85 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model List<OrderDto>
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+}
+
+<script>
+    $("#menu_order").addClass("menu_active");
+</script>
+
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Đơn hàng</h6>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ liên hệ</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ liên hệ</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(item.Id)</td>
+                                <td class="text-nowrap">@(item.OrderDate.ToString("HH:mm dd-MM-yyyy"))</td>
+                                <td>@(item.Customer.FullName)</td>
+                                <td>@(item.Customer.PhoneNumber)</td>
+                                <td>@(item.Customer.Address)</td>
+                                <td class="text-right">@(DataHelper.ToCurrency(item.TotalAmount))</td>
+                                <td class="text-center">
+                                    @if (item.Status == 10)
+                                    {
+                                    <span class="badge rounded-pill bg-warning text-dark ">Chưa thanh toán</span>
+                                        
+                                    }
+                                    else if (item.Status == 20)
+                                    {
+                                        <span class="badge rounded-pill bg-success text-white">Đã thanh toán</span>
+                                    }
+                                    else if (item.Status == 30)
+                                    {
+                                <span class="badge rounded-pill bg-danger text-white">Đã hủy</span>
+
+                                    }
+                                </td>
+                                <td>
+                                    <a href="/Administrator/Order/Update?id=@item.Id" class="btn btn-primary btn-sm  btn-xs">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

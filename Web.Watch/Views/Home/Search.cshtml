@@ -1,0 +1,194 @@
+﻿@using Web.Core.Dto;
+@model List<ProductDto>
+@{
+    ViewBag.Title = "Tìm kiếm";
+}
+<div class="container-fluid bg-secondary">
+    <div class="d-flex flex-column align-items-center  justify-content-center" style="min-height: 80px">
+
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="/" class="text-danger">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Kết quả tìm kiếm - "@ViewBag.q"</p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        <!--<div class="col-lg-3 col-md-12" >-->
+        <!-- Price Start -->
+        <!--<div class=" border-bottom mb-4 pb-4" >
+            <h5 class="font-weight-semi-bold mb-4">Loại sản phẩm</h5>
+            <form>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" checked id="price-all">
+                    <label class="custom-control-label" for="price-all">Tất cả</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-1">
+                    <label class="custom-control-label" for="price-1">Bếp tủ liền</label>
+
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-2">
+                    <label class="custom-control-label" for="price-2">Bếp ga âm</label>
+
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-3">
+                    <label class="custom-control-label" for="price-3">Bếp điện từ</label>
+
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-4">
+                    <label class="custom-control-label" for="price-4">Bếp điện</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-5">
+                    <label class="custom-control-label" for="price-5">Bếp từ</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-6">
+                    <label class="custom-control-label" for="price-6">Bếp hồng ngoại</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-7">
+                    <label class="custom-control-label" for="price-7">Bếp đơn</label>
+                </div>
+
+            </form>
+        </div>-->
+        <!-- Price End -->
+        <!-- Color Start -->
+        <!--<div class="border-bottom mb-4 pb-4">
+            <h5 class="font-weight-semi-bold mb-4">Thương hiệu</h5>
+            <form>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" checked id="color-all">
+                    <label class="custom-control-label" for="price-all">All Color</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="color-1">
+                    <label class="custom-control-label" for="color-1">Sunhouse</label>
+                </div>
+
+            </form>
+        </div>-->
+        <!-- Color End -->
+        <!-- Size Start -->
+        <!--<div class="mb-5">
+            <h5 class="font-weight-semi-bold mb-4">Giá </h5>
+            <form>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" checked id="size-all">
+                    <label class="custom-control-label" for="size-all">Tất cả</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-1">
+                    <label class="custom-control-label" for="size-1">0 - 10.000.000</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-2">
+                    <label class="custom-control-label" for="size-2">10.000.000 - 20.000.000</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-3">
+                    <label class="custom-control-label" for="size-3">30.000.000 - 40.000.000</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-4">
+                    <label class="custom-control-label" for="size-4">40.000.000 - 50.000.000</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-5">
+                    <label class="custom-control-label" for="size-5">60.000.000 - 70.000.000</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-6">
+                    <label class="custom-control-label" for="size-6">70.000.000 - 80.000.000</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-7">
+                    <label class="custom-control-label" for="size-7">80.000.000 - 90.000.000</label>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="size-8">
+                    <label class="custom-control-label" for="size-8">> 100.000.000</label>
+                </div>
+            </form>
+        </div>-->
+        <!-- Size End -->
+        <!--</div>-->
+        <!-- Shop Sidebar End -->
+        <!-- Shop Product Start -->
+        <div class="col-lg-12 col-md-12">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+
+                    </div>
+                </div>
+                @{
+
+                    foreach (var product in Model)
+                    {
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                        </div>
+                    }
+                    if (ViewBag.TotalPage > 0)
+                    {
+                        var pageDisplay = (int)ViewBag.maxPage;
+                        int totalPage = (int)ViewBag.TotalPage;
+                        int curPage = ((int)ViewBag.Page);
+
+                        var startPageIndex = Math.Max(1, curPage - pageDisplay / 2);
+                        var endPageIndex = Math.Min(totalPage, curPage + pageDisplay / 2);
+
+                        var link = "/tim-kiem";
+
+                        <div class="col-12 pb-1 mt-5">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mb-3">
+                                    @if (curPage > ViewBag.First)
+                                    {
+                                        <li class="page-item"> <a href="@link?q=@ViewBag.q&page=@ViewBag.First" title="Trang dau" class="page-link"><i class="fa fa-angle-double-left"></i></a></li>
+
+                                        <li class="page-item"><a href="@link?q=@ViewBag.q&page=@ViewBag.Prev" title="Trang truoc" class="page-link"><i class="fa fa-angle-left"></i></a></li>
+                                    }
+                                    @for (int i = startPageIndex; i <= endPageIndex; i++)
+                                    {
+                                        if (curPage == i)
+                                        {
+                                            <li class="page-item active"> <a href="@link?q=@ViewBag.q&page=@i" class="page-link" title="Trang @i">@i</a></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a href="@link?q=@ViewBag.q&page=@i" title="Trang @i" class="page-link">@i</a></li>
+                                        }
+                                    }
+                                    @if (curPage < totalPage)
+                                    {
+
+                                        <li class="page-item"> <a href="@link?q=@ViewBag.q&page=@ViewBag.Last" title="Trang cuoi" class="page-link"><i class="fa fa-angle-right"></i></a></li>
+                                        <li class="page-item"><a href="@link?q=@ViewBag.q&page=@ViewBag.Next" title="Trang sau" class="page-link"><i class="fa fa-angle-double-right"></i></a></li>
+
+
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+
+                    }
+                    else
+                    { <span>Không có sản phẩm nào</span>}
+
+                }
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>

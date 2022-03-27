@@ -1,0 +1,153 @@
+﻿@using Web.Core.Dto;
+@using Web.Watch.Service;
+@{
+    WebsiteDto website = UtilService.GetWebsite();
+    ViewBag.Title = website.MetaTitle;
+
+    List<GalleryDto> galleries = (List<GalleryDto>)ViewData["galleries"];
+    List<ProductDto> sellings = (List<ProductDto>)ViewData["sellings"];
+    List<MenuDto> menus = (List<MenuDto>)ViewData["menus"];
+}
+
+<div class="container-fluid mb-5">
+    <div class="row" >
+        <div class="col" style="padding:0; width:auto">
+            <div id="header-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < galleries.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <div class="carousel-item active" style="height: 410px;">
+                                <img class="img-fluid" src="@galleries[i].Image" alt="Image">
+                                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                    <div class="p-3" style="max-width: 700px;">
+                                        <h4 class="text-light text-uppercase font-weight-medium mb-3">
+                                        </h4>
+                                        <h3 class="display-4 text-white font-weight-semi-bold mb-4"></h3>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item" style="height: 410px;">
+                                <img class="img-fluid" src="@galleries[i].Image" alt="Image">
+                                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                    <div class="p-3" style="max-width: 700px;">
+                                        <h4 class="text-light text-uppercase font-weight-medium mb-3">
+                                        </h4>
+                                        <h3 class="display-4 text-white font-weight-semi-bold mb-4"></h3>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                    <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                        <span class="carousel-control-prev-icon mb-n2"></span>
+                    </div>
+                </a>
+                <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                    <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                        <span class="carousel-control-next-icon mb-n2"></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-0">
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-check text-danger m-0 mr-2"></h1>
+                <h5 class="font-weight-semi-bold m-0">
+                    Cam kết chất lượng<br>
+                    <span style="font-size: small;">Sản phẩm chính hãng</span>
+                </h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-shipping-fast text-danger m-0 mr-1"></h1>
+                <h5 class="font-weight-semi-bold m-0">
+                    Vận chuyển siêu tốc<br>
+                    <span class="ml-1" style="font-size: small;">Giao trong ngày</span>
+                </h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fas fa-exchange-alt text-danger m-0 mr-2"></h1>
+                <h5 class="font-weight-semi-bold m-0">
+                    Chính sách linh hoạt<br>
+                    <span class="ml-1" style="font-size: small;">7 ngày đổi trả dễ dàng</span>
+                </h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa-solid fa-hand-holding-dollar text-danger m-0"></h1>
+                <h5 class="font-weight-semi-bold m-0">
+                    Thanh toán thuận lợi<br>
+                    <span class="ml-1" style="font-size: small;">Nhận hàng và thanh toán</span>
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-2">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2">Sản phẩm bán chạy</span></h2>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="owl-carousel related-carousel">
+                @foreach (var item in sellings)
+                {
+                    @Html.Partial("~/Views/Partial/_pProduct.cshtml", item)
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid py-2 mt-3">
+    @foreach (var menu in menus)
+    {
+        if (menu.Products.Count > 0)
+        {
+            <div class="container-fluid py-2 mt-4" style="margin-bottom: 10px">
+                <div class="row">
+                    <div class="col-lg-9 col-md-8 text-left">
+                        <h5 class=""> @menu.Name</h5>
+                    </div>
+                    <div class="col-lg-3 col-md-4  text-right">
+                        <a href="/@menu.Alias" class="text-danger"> Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row px-xl-5">
+                <div class="col">
+                    <div class="owl-carousel related-carousel">
+                        @foreach (var product in menu.Products)
+                        {
+                            @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
+
+
+

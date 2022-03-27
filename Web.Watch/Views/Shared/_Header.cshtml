@@ -1,0 +1,66 @@
+﻿@using Web.Core.Dto;
+@model WebsiteDto
+@using Web.Watch.Service;
+
+@{
+    List<MenuDto> menus = UtilService.GetMenus();
+    List<ArticleDto> articles = UtilService.GetArticle();
+}
+
+<div class="container-fluid">
+    <div class="row bg-secondary py-2 px-xl-5">
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="d-inline-flex align-items-center">
+                <a class="text-dark px-2" href="mailto:@Model.Email">
+                    <i class="fa fa-envelope text-dark mx-2"></i>
+                    @Model.Email
+                </a>
+                <a class="text-dark px-2" href="tel:@Model.PhoneNumber">
+                    <i class="fa fa-phone text-dark mx-2"></i>
+                    @Model.PhoneNumber
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6 text-center text-lg-right">
+            <div class="d-inline-flex align-items-center">
+                <a class="text-dark" href="/Home/Introduce">Giới thiệu</a>
+                <span class="text-muted px-2">|</span>
+                <a class="text-dark" href="/Home/Promotion">Khuyến mãi</a>
+                <span class="text-muted px-2">|</span>
+                <a class="text-dark" href="/Home/Contact">Liên hệ</a>
+            </div>
+        </div>
+    </div>
+    <div class="row align-items-center py-3 px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a href="/" class="text-decoration-none">
+                <img src="@Model.Logo" style="width:75px" class="img-fluid" alt="LOGO" />
+            </a>
+        </div>
+        <div class="col-lg-6 col-8 text-left">
+            <form action="/tim-kiem" method="get">
+                <div class="input-group">
+                    <input type="text" name="q" value="@ViewBag.q" class="form-control"  placeholder="Tìm kiếm">
+                    <div class="input-group-append">
+                        <button type="submit" class="input-group-text bg-transparent text-danger">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3 col-4 text-right">
+            <a href="/gio-hang" class="btn border">
+                <i class="fa fa-fw fa-cart-arrow-down text-danger mr-1"></i>
+                @if (Session["cartCount"] != null && (int)Session["cartCount"] > 0)
+                {
+                    <span class="badge">@Session["cartCount"]</span>
+                }
+                else
+                {
+                    <span class="badge">0</span>
+                }
+            </a>
+        </div>
+    </div>
+</div>

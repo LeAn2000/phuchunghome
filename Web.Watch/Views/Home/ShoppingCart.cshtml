@@ -1,0 +1,138 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model List<OrderDetailDto>
+@{
+    ViewBag.Title = "Giỏ hàng";
+}
+<div class="container-fluid bg-secondary">
+    <div class="d-flex flex-column align-items-center  justify-content-center" style="min-height: 80px">
+        
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="/" class="text-danger">Trang chủ</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Thanh toán</p>
+        </div>
+    </div>
+</div>
+
+<div class="container-cart">
+    <div class="row">
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="col-md-12 mt-5 text-center">
+                <div style="margin-bottom:20px">
+                    <h4 class="text-center text-red">Giỏ hàng của bạn đang trống !</h4>
+                </div>
+                <div>
+                    <a href="/" class="btn btn-danger" style="border-radius:13px">Quay lại trang chủ</a>
+                </div>
+            </div>
+        }
+        else
+        {
+
+            <div class="container-fluid pt-5">
+                <div class="row px-xl-5">
+                    <div class="col-lg-8 table-responsive mb-5">
+                        <form action="/Home/UpdateCart" method="post">
+                            <table class="table table-bordered text-center mb-0">
+                                <thead class="bg-secondary text-dark">
+                                    <tr>
+                                        <th colspan="2">Sản phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Số lượng</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-middle">
+                                    @for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        var item = Model[i];
+                                        <tr>
+                                            <td class="align-middle">
+                                                <input type="hidden" name="products[@i].ProductId" value="@item.ProductId" />
+                                                <img src="@item.ProductImage" style="width: 50px;" />
+                                            </td>
+                                            <td class="align-middle">
+                                                <a href="#" class="item-name">
+                                                    @item.ProductName
+                                                </a>
+                                            </td>
+                                            <td class="align-middle">
+                                                <b class="">@(DataHelper.ToCurrency(item.ProductDiscountPrice))</b>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="mb-1 text-center">
+                                                    <input type="number" min="0" value="@item.Qty" name="products[@i].Qty"
+                                                           class="form-control form-control-sm" style="max-width:80px">
+                                                </div>
+                                                <button type="submit" class="btn btn-light text-center btn-sm">
+                                                    <span class="text-nowrap">Cập nhật</span>
+                                                </button>
+                                            </td>
+                                            <td class="align-middle">
+                                                <b>@(DataHelper.ToCurrency(item.ProductDiscountPrice * item.Qty))</b>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="text-right" colspan="4">
+                                            <h5>Tổng tiền</h5>
+                                        </td>
+                                        <td>
+                                            <h5 style="color:red">
+                                                @(DataHelper.ToCurrency(Model.Sum(x =>
+                                            x.ProductDiscountPrice * x.Qty)))
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                        <div class="text-center mt-4">
+                            <a href="/" class="btn btn-danger btn-sm p-2" style="border-radius:13px">Tiếp tục mua hàng</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <form action="/home/Order" method="post">
+                            <div class="card border-secondary mb-5">
+
+                                <div class="card-header bg-secondary border-0">
+                                    <h4 class="font-weight-semi-bold m-0">Thông tin liên hệ</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between pb-4">
+                                        <input style="border-radius: 10px;" class="form-control py-4"
+                                               type="text" placeholder="Họ tên (*)" name="Customer.FullName" value="" required />
+                                    </div>
+                                    <div class="d-flex justify-content-between pb-4">
+                                        <input style="border-radius: 10px;" class="form-control py-4"
+                                               type="text" placeholder="Số điện thoại (*)" name="Customer.PhoneNumber" value="" required />
+                                    </div>
+                                    <div class="d-flex justify-content-between pb-4">
+                                        <input type="text" style="border-radius: 10px;" class="form-control py-4"
+                                               placeholder="Địa chỉ liên hệ (*)" name="Customer.Address" value="" required />
+                                    </div>
+                                    <div class="d-flex justify-content-between pb-4">
+                                        <input type="text" style="border-radius: 10px;" class="form-control py-4"
+                                               placeholder="Email" name="Customer.Email" value="" />
+                                    </div>
+                                    <div class="d-flex justify-content-between pb-4">
+
+                                        <textarea rows="2" placeholder="Ghi chú" name="Note" class="form-control py-4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer border-secondary ">
+                                <button style="border-radius: 15px;" type="submit"
+                                        class="btn btn-lg btn-block btn-danger font-weight-bold my-3 py-3">
+                                    Đặt hàng
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

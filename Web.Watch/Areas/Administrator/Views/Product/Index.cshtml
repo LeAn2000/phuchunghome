@@ -1,0 +1,113 @@
+﻿@using Web.Core.Dto;
+@using Web.Core.Util;
+@model List<ProductDto>
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<script>
+    $("#menu_product").addClass("menu_active");
+</script>
+
+
+
+<a href="/Administrator/Product/Add" class="btn btn-primary btn-sm btn-icon-split ml-4 mb-3">
+    <span class="icon text-white-50">
+        <i class="fa fa-plus"></i>
+    </span>
+    <span class="text">Thêm mới</span>
+</a>
+
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Sản phẩm</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Giá niêm yết</th>
+                            <th>Giá khuyễn mại</th>
+                            <th>Bán chạy</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Giá niêm yết</th>
+                            <th>Giá khuyễn mại</th>
+                            <th>Bán chạy</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <img src="@item.Image" class="img-thumbnail" />
+                                </td>
+                                <td>@item.Name</td>
+                                <td>@(item.Menu?.Name)</td>
+                                <td class="text-right">@(DataHelper.ToCurrency(item.Price))</td>
+                                <td class="text-right">@(DataHelper.ToCurrency(item.DiscountPrice))</td>
+                                <td class="text-center">
+                                    @if (item.Selling == true)
+                                    {
+                                        <a href="#" class="btn btn-success btn-sm btn-circle">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (item.Status == 10)
+                                    {
+                                        <span class="badge rounded-pill bg-info text-white">Đang bán</span>
+                                    }
+                                    else if (item.Status == 20)
+                                    {
+                                        <span class="badge rounded-pill bg-warning text-dark">Hết hàng</span>
+                                    }
+                                    else if (item.Status == 30)
+                                    {
+                                        <span class="badge rounded-pill bg-danger">Ngừng bán</span>
+                                    }
+                                </td>
+                                <td style="white-space:nowrap">
+
+                                    <a href="/Administrator/Product/Update?id=@item.Id" class="btn btn-primary btn-circle btn-sm">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <button onclick="confirmDelete(@item.Id)" class="btn btn-danger btn-circle btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm("Xác nhận xóa")) {
+            location.href = "/Administrator/Product/Delete?id=" + id;
+        }
+    }
+</script>

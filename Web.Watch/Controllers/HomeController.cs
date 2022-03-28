@@ -36,31 +36,19 @@ namespace Web.Watch.Controllers
 
             return View();
         }
-        public ActionResult Introduce()
-        {
-            return View();
-        }
-        public ActionResult Contact()
-        {
-            return View();
-        }
-        public ActionResult Promotion()
-        {
-            return View();
-        }
 
-        public ActionResult Category(string alias, int page = 1, int pageSize = 12)
+        public ActionResult Category(string alias, string orderBy = "name-asc", int page = 1, int pageSize = 12)
         {
             MenuDto menu = this.menuService.GetByAlias(alias);
             int totalRecord = 0;
-            List<ProductDto> products = this.productService.GetByMenu(menu.Id, ref totalRecord, page, pageSize);
+            List<ProductDto> products = this.productService.GetByMenu(menu.Id, orderBy, ref totalRecord, page, pageSize);
             menu.Products = products;
             ViewBag.Total = totalRecord;
             ViewBag.Page = page;
             int max = 5;
             int totalPage = 0;
             totalPage = (int)Math.Ceiling(((double)totalRecord / (double)pageSize));
-
+            ViewData["OrderbyList"] = this.productService.GetStringOrderBy();
             ViewBag.TotalPage = totalPage;
             ViewBag.maxPage = max;
             ViewBag.First = 1;
@@ -73,6 +61,7 @@ namespace Web.Watch.Controllers
             ViewBag.MetaRevisitAfter = menu.MetaRevisitAfter;
             ViewBag.MetaContentLanguage = menu.MetaContentLanguage;
             ViewBag.MetaContentType = menu.MetaContentType;
+            ViewBag.orderBy = orderBy;
             return View(menu);
         }
 
@@ -89,6 +78,20 @@ namespace Web.Watch.Controllers
             ViewBag.MetaContentLanguage = product.MetaContentLanguage;
             ViewBag.MetaContentType = product.MetaContentType;
             return View(product);
+        }
+
+        public ActionResult Introduce()
+        {
+            return View();
+        }
+
+        public ActionResult Contact()
+        {           
+            return View();
+        }
+        public ActionResult Promotion()
+        {
+            return View();
         }
 
         public ActionResult Buy(int id)
@@ -180,13 +183,15 @@ namespace Web.Watch.Controllers
             return View(this.articleService.GetByAlias(alias));
         }
 
-        public ActionResult Search(string q = "", int page = 1, int pageSize = 12)
+        public ActionResult Search(string q = "", string orderBy = "name-asc", string Typeid = "", string price = "", int page = 1, int pageSize = 12)
         {
             this.SetSEO_Main();
             ViewBag.q = q;
             int totalrecord = 0;
-            List<ProductDto> products = this.productService.Search(q, ref totalrecord, page, pageSize);
-            ViewBag.Total = totalrecord;
+            List<ProductDto> products = this.productService.Search(q, orderBy, Typeid, price, ref totalrecord, page, pageSize);
+            ViewData["OrderbyList"] = this.productService.GetStringOrderBy();
+            ViewData["TypeMenu"] = this.productService.GetBranch();
+            ViewData["price"] = this.productService.FilterPrice();
             ViewBag.Page = page;
             int max = 5;
             int totalPage = 0;
@@ -197,6 +202,9 @@ namespace Web.Watch.Controllers
             ViewBag.Last = totalPage;
             ViewBag.Next = page + 1;
             ViewBag.Pre = page - 1;
+            ViewBag.orderBy = orderBy;
+            ViewBag.Typeid = Typeid;
+            ViewBag.Filterprice = price;
             return View(products);
 
         }

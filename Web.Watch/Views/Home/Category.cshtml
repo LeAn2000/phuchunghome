@@ -1,6 +1,7 @@
 ﻿@using Web.Core.Dto;
 @model MenuDto
 @{
+    List<OrderByDto> listOrderName = (List<OrderByDto>)ViewData["OrderbyList"];
     ViewBag.Title = Model.Name;
 }
 
@@ -14,29 +15,52 @@
         </div>
     </div>
 </div>
+
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
-        @*<div class="col-lg-3 col-md-12">
-
-            </div>*@
+        <div class="col-lg-3 col-md-12">
+            <!-- Price Start -->
+            <div class="border-bottom mb-4 pb-4">
+                <h5 class="font-weight-semi-bold mb-4">Sắp xếp</h5>
+                <form>
+                    @foreach (var item in listOrderName)
+                    {
+                        <div  class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" id="@item.value" class="custom-control-input" value="@item.value" @(ViewBag.orderBy == @item.value ? "checked" : "") onclick='window.location.assign("/@Model.Alias?page=@ViewBag.Page&orderBy=@item.value&Typeid=@ViewBag.Typeid&price=@ViewBag.Filterprice")' />
+                            <label class="custom-control-label" for="@item.value">@item.Name</label>
+                        </div>
+                    }
+                </form>
+            </div>
+            <!-- Size End -->
+        </div>
         <!-- Shop Sidebar End -->
         <!-- Shop Product Start -->
-        <div class="col-lg-12 col-md-12">
+        <div class="col-lg-9 col-md-12">
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                     
+                        @*<form action="/tim-kiem" method="get">
+                    <div class="input-group">
+                        <input type="text" name="q" value="@ViewBag.q" class="form-control" placeholder="Tìm kiếm theo tên">
+                        <div class="input-group-append">
+                            <button type="submit" class="input-group-text bg-transparent text-danger">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>*@
+
                     </div>
                 </div>
+
                 @foreach (var product in Model.Products)
                 {
-                    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                         @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
                     </div>
                 }
-
-
                 @if (ViewBag.TotalPage > 0)
                 {
                     var pageDisplay = (int)ViewBag.maxPage;
@@ -85,12 +109,18 @@
                 else
                 {
 
-                    <span>Không có sản phẩm nào</span>
+                    <div class="col-12 pb-1 mt-5">
+
+                        <ul class="pagination justify-content-center mb-3">
+                            <li>
+                                <span>Không có sản phẩm nào</span>
+                            </li>
+                        </ul>
+                    </div>
                 }
-
-
             </div>
         </div>
         <!-- Shop Product End -->
     </div>
 </div>
+

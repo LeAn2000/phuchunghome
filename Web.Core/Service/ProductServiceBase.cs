@@ -88,12 +88,30 @@ namespace Web.Core.Service
             }
         }
 
-        public virtual List<ProductDto> GetByMenu(int menuId, ref int totalRecord , int page =1, int pageSize = 1)
+        public virtual List<ProductDto> GetByMenu(int menuId, string orderBy, ref int totalRecord, int page = 1, int pageSize = 1)
         {
             using (var context = new MyContext())
             {
                 var query = context.Products
-                    .Where(x => x.Status == 10 && x.MenuId == menuId);          
+                    .Where(x => x.Status == 10 && x.MenuId == menuId);
+                if (!string.IsNullOrWhiteSpace(orderBy))
+                {
+                    switch (orderBy)
+                    {
+                        case "name-asc":
+                            query = query.OrderBy(x => x.Name);
+                            break;
+                        case "name-desc":
+                            query = query.OrderByDescending(x => x.Name);
+                            break;
+                        case "price-asc":
+                            query = query.OrderBy(x => x.Price);
+                            break;
+                        case "price-desc":
+                            query = query.OrderByDescending(x => x.Price);
+                            break;
+                    }
+                }
                 totalRecord = query.Count();
                 return query
                     .Select(x => new ProductDto()
@@ -105,7 +123,7 @@ namespace Web.Core.Service
                         Image = x.Image,
                         Price = x.Price,
                         Name = x.Name
-                    }).OrderBy(x=>x.Price).Skip((page-1)*pageSize).Take(pageSize).ToList();
+                    }).OrderBy(x => x.Price).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -134,7 +152,7 @@ namespace Web.Core.Service
                             break;
                     }
                 }
-              
+
                 return query
                     .Select(x => new ProductDto()
                     {
@@ -149,16 +167,73 @@ namespace Web.Core.Service
             }
         }
 
-        public virtual List<ProductDto> Search(string keySearch, ref int totalRecord, int page = 1, int pageSize = 1)
+        public virtual List<ProductDto> Search(string keySearch, string orderBy, string Typeid, string price, ref int totalRecord, int page = 1, int pageSize = 1)
         {
             if (string.IsNullOrWhiteSpace(keySearch))
                 keySearch = null;
 
             using (var context = new MyContext())
             {
-                var query = context.Products
-                    .Where(x => x.Status == 10)
-                    .Where(x => keySearch == null || x.Name.Contains(keySearch));
+                //var query = context.Products
+                //    .Where(x => x.Status == 10)
+                //    .Where(x => keySearch == null || x.Name.Contains(keySearch));
+                var query = from p in context.Products
+                            join m in context.Menus on p.MenuId equals m.Id
+                            where p.Status == 10
+                            where p.Name.Contains(keySearch)
+                            select new
+                            {
+                                Id = p.Id,
+                                Alias = p.Alias,
+                                DiscountPercent = p.DiscountPercent,
+                                DiscountPrice = p.DiscountPrice,
+                                Image = p.Image,
+                                Price = p.Price,
+                                Name = p.Name,
+                                ParentName = m.Name
+
+                            };
+                if (!string.IsNullOrWhiteSpace(Typeid))
+                    query = query.Where(x => x.ParentName.Contains(Typeid));
+
+                //query = query.OrderBy(x => x.Price);
+                //query = query.Where(x => x.Price > 10000000);
+                if (!string.IsNullOrWhiteSpace(orderBy))
+                {
+                    switch (orderBy)
+                    {
+                        case "name-asc":
+                            query = query.OrderBy(x => x.Name);
+                            break;
+                        case "name-desc":
+                            query = query.OrderByDescending(x => x.Name);
+                            break;
+                        case "price-asc":
+                            query = query.OrderBy(x => x.Price);
+                            break;
+                        case "price-desc":
+                            query = query.OrderByDescending(x => x.Price);
+                            break;
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(price))
+                {
+                    switch (price)
+                    {
+                        case "price-id1":
+                            query = query.Where(x => x.Price <= 2000000);
+                            break;
+                        case "price-id2":
+                            query = query.Where(x => x.Price > 2000000 & x.Price <= 10000000);
+                            break;
+                        case "price-id3":
+                            query = query.Where(x => x.Price > 10000000 & x.Price <= 20000000);
+                            break;
+                        case "price-id4":
+                            query = query.Where(x => x.Price > 20000000);
+                            break;
+                    }
+                }
                 totalRecord = query.Count();
                 return query
                     .Select(x => new ProductDto()
@@ -170,11 +245,38 @@ namespace Web.Core.Service
                         Image = x.Image,
                         Price = x.Price,
                         Name = x.Name
-                    }).OrderBy(x => x.Price).Skip((page - 1) * pageSize).Take(pageSize).ToList();
-                    
+                    }).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
             }
         }
+        public virtual List<OrderByDto> GetStringOrderBy()
+        {
+            var list = new List<OrderByDto>();
 
+            list.Add(new OrderByDto("Sắp xếp theo tên A-Z ", "name-asc"));
+            list.Add(new OrderByDto("Sắp xếp theo tên Z-A", "name-desc"));
+            list.Add(new OrderByDto("Sắp xếp theo giá tăng ", "price-asc"));
+            list.Add(new OrderByDto("Sắp xếp theo giá giảm ", "price-desc"));
+            return list;
+        }
+
+        public virtual List<string> GetBranch()
+        {
+            var list = new List<string>();
+            list.Add("Canzy");
+            list.Add("Erosun");
+            return list;
+        }
+
+        public virtual List<OrderByDto> FilterPrice()
+        {
+            var list = new List<OrderByDto>();
+            list.Add(new OrderByDto("0-2.000.000", "price-id1"));
+            list.Add(new OrderByDto("2.000.000-10.000.000", "price-id2"));
+            list.Add(new OrderByDto("10.000.000-20.000.000", "price-id3"));
+            list.Add(new OrderByDto("trên 20.000.000", "price-id4"));
+            return list;
+        }
         public virtual ProductDto GetById(int key)
         {
             using (var context = new MyContext())
@@ -451,5 +553,8 @@ namespace Web.Core.Service
                 }
             }
         }
+
+
+
     }
 }

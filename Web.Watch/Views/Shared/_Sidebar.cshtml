@@ -6,9 +6,121 @@
     List<MenuDto> menus = UtilService.GetMenus();
     List<ArticleDto> articles = UtilService.GetArticle();
 }
+<style>
+    .navbar1 {
+        overflow: hidden;
+        background-color: #dc3545;
+    }
 
-<link href="~/Plugins/Bootrapnew/styleCustom.css" rel="stylesheet" />
+        .navbar1 a {
+            float: left;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
 
+    .dropdown1 {
+        float: left;
+        overflow: hidden;
+    }
+
+        .dropdown1 .dropbtn1 {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+            width: 100%;
+            /*red background color width*/
+            text-align: start;
+            /*text inside in red background color*/
+        }
+
+
+
+    .dropdown-content-sub1 {
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: -300px;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        width: 920px;
+        left: 296px;
+        /*block width*/
+    }
+
+    .dropdown-content1 {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        width: 300px;
+        /*block width*/
+    }
+
+        .dropdown-content1 a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+            .dropdown-content1 a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown1:hover .dropdown-content1 {
+        display: block;
+    }
+
+    .dropdown-sub1:hover .dropdown-content-sub1 {
+        display: block;
+    }
+
+
+    .clearfix {
+        *zoom: 1;
+    }
+
+        .clearfix:before,
+        .clearfix:after {
+            content: " ";
+            display: table;
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+
+    ul.list {
+        padding: 10px;
+        list-style: none;
+    }
+
+        ul.list li {
+            display: inline-block;
+        }
+
+    img {
+        vertical-align: inherit;
+        width: 30px;
+        height: 30px;
+        height: auto !important;
+    }
+</style>
 <div class="container-fluid" style="background: #dc3545; padding-top: 7px;">
     <div class="row border-top px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
@@ -35,9 +147,7 @@
                                         <ul class="list clearfix">
                                             @foreach (var item in menu.SubMenus)
                                             {
-                                                <li>
-                                                    <a href="/@item.Alias"> @item.Name</a>
-                                                </li>
+                                                <li><a href="/@item.Alias"> @item.Name</a></li>
 
                                             }
 

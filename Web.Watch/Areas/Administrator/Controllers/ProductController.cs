@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -47,10 +48,42 @@ namespace Web.Watch.Areas.Administrator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(ProductDto product)
+        public ActionResult Add(ProductDto product, HttpPostedFileBase[] UploadImages, HttpPostedFileBase Images)
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
+
+            if (Images != null && Images.ContentLength > 0)
+            {
+                string ImageFileName = Path.GetFileName(Images.FileName);
+                string FolderPath = Path.Combine(Server.MapPath("~/Resources/files/Product/"), ImageFileName);
+                Images.SaveAs(FolderPath);
+                var link = "/Resources/files/Product/" + ImageFileName;
+                product.Image = link;
+            }
+
+            foreach (var image in UploadImages)
+            {
+                if (image == null) break;
+                string ImageFileName = Path.GetFileName(image.FileName);
+                string FolderPath = Path.Combine(Server.MapPath("~/Resources/files/Product/"), ImageFileName);
+                image.SaveAs(FolderPath);
+                var link = "/Resources/files/Product/" + ImageFileName;
+                var ProductImage = new ProductImageDto()
+                {
+                    Image = link
+                };
+                if (product.ProductImages == null)
+                {
+                    var files = new List<ProductImageDto>();
+                    files.Add(ProductImage);
+                    product.ProductImages = files;
+                }
+                else
+                {
+                    product.ProductImages.Add(ProductImage);
+                }
+            }
 
             this.productService.Insert(product);
             return RedirectToAction("Index");
@@ -89,10 +122,36 @@ namespace Web.Watch.Areas.Administrator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(ProductDto product)
+        public ActionResult Update(ProductDto product, HttpPostedFileBase[] UploadImages, HttpPostedFileBase Images)
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
+
+            if (Images != null && Images.ContentLength > 0)
+            {
+                string ImageFileName = Path.GetFileName(Images.FileName);
+                string FolderPath = Path.Combine(Server.MapPath("~/Resources/files/Product/"), ImageFileName);
+                Images.SaveAs(FolderPath);
+                var link = "/Resources/files/Product/" + ImageFileName;
+                product.Image = link;
+            }
+
+            foreach (var image in UploadImages)
+            {
+                if (image == null) break;
+                if (image.ContentLength > 0)
+                {
+                    string ImageFileName = Path.GetFileName(image.FileName);
+                    string FolderPath = Path.Combine(Server.MapPath("~/Resources/files/Product/"), ImageFileName);
+                    image.SaveAs(FolderPath);
+                    var link = "/Resources/files/Product/" + ImageFileName;
+                    var ProductImage = new ProductImageDto()
+                    {
+                        Image = link
+                    };
+                    product.ProductImages.Add(ProductImage);
+                }
+            }
 
             this.productService.Update(product.Id, product);
             return RedirectToAction("Index");

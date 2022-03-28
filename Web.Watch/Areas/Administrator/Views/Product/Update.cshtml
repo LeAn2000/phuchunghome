@@ -1,8 +1,7 @@
 ﻿@using Web.Core.Dto;
 @model ProductDto
-@using Web.Watch.Service;
 @{
-    List<MenuDto> menus = UtilService.GetMenus();
+    List<MenuDto> menus = (List<MenuDto>)ViewData["menus"];
     List<ProductAttributeDto> attributes = (List<ProductAttributeDto>)ViewData["attributes"];
     ViewBag.Title = "Thông tin Sản phẩm";
 }
@@ -14,23 +13,24 @@
 <script src="~/Areas/Administrator/Plugins/ckfinder/ckfinder.js"></script>
 <script src="~/Areas/Administrator/Plugins/ckeditor/ckeditor.js"></script>
 
-<form id="formSubmit" class="container" action="/Administrator/Product/Update" method="post">
+<form id="formSubmit" class="container" action="/Administrator/Product/Update" enctype="multipart/form-data" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" name="Id" value="@Model.Id" />
     <section class="content">
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    <div class="col-md-3 text-center">
-                        <div style="margin-bottom:10px">
+                    <div class="col-md-4 text-center">
+                        <div style="margin-bottom:10px" class="mb-5">
                             <label>Hình ảnh đại diện sản phẩm</label>
                             <img id="img" src="@Model.Image" class="img-thumbnail" />
                             <input id="inpImage" type="hidden" name="Image" value="@Model.Image" />
-                            <button type="button" id="button-upload" class="btn btn-success btn-sm mt-2">Tải ảnh lên</button>
+                            <input class="btn btn-success mt-3 btn-sm" id="fileName" type="file" name="Images" accept=".jpg,.jpeg,.png" onchange="validateFileType()" />
                         </div>
-                        <div class="text-left">
+                        <div class="text-center">
                             <div style="margin-bottom:5px">
-                                <button type="button" id="button-upload-more" class="btn btn-success btn-sm">Thêm ảnh</button>
+                                <h5>Chọn hình minh họa sản phẩm</h5>
+                                <input class="btn btn-success mt-3 btn-sm" id="fileName1" type="file" multiple name="uploadImages" accept=".jpg,.jpeg,.png" onchange="validateFileType1()" />
                             </div>
                             <div id="box-product-gallery" class="row">
                                 @for (int i = 0; i < Model.ProductImages.Count; i++)
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
@@ -57,32 +57,13 @@
                                             <label>Danh mục sản phẩm <span class="text-danger">(*)</span></label>
                                             <select name="MenuId" class="form-control input-sm" required>
                                                 <option value="">N/A</option>
-
                                                 @foreach (var item in menus)
                                                 {
-                                                    if (item.SubMenus == null || item.SubMenus.Count == 0)
-                                                    {
-                                                        <option value="@item.Id" @(Model.MenuId == item.Id ? "selected" : "")>
-
-                                                            @item.Name
-                                                        </option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@item.Id" @(Model.MenuId == item.Id ? "selected" : "")>
-
-                                                            @item.Name
-                                                        </option>
-                                                        foreach (var menu in item.SubMenus)
-                                                        {
-                                                            <option value="@menu.Id" @(Model.MenuId == menu.Id ? "selected" : "")>
-                                                                @Html.Raw((menu.ParentMenu != null ? "&emsp;_" : ""))
-                                                                @menu.Name
-                                                            </option>
-                                                        }
-                                                    }
+                                                    <option value="@item.Id" @(Model.MenuId == item.Id ? "selected" : "")>
+                                                        @Html.Raw((item.ParentMenu != null ? "&emsp;_" : ""))
+                                                        @item.Name
+                                                    </option>
                                                 }
-
                                             </select>
                                         </div>
                                     </div>
@@ -249,6 +230,30 @@
 
 
 <script>
+
+    function validateFileType() {
+        var fileName = document.getElementById("fileName").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            document.getElementById('img').style.display = 'none';
+        } else {
+            alert("Tệp này không được xem là một hình");
+            $("#fileName").val('');
+        }
+    }
+    function validateFileType1() {
+        var fileName = document.getElementById("fileName1").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+
+        } else {
+            alert("Tệp này không được xem là một hình");
+            $("#fileName1").val('');
+        }
+    }
+
     function deleteProductGallery(id) {
         if (confirm("Xác nhận xóa")) {
             $(`#${id}`).remove();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -36,13 +37,24 @@ namespace Web.Watch.Areas.Administrator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(MenuDto menu)
+        public ActionResult Add(MenuDto menu, HttpPostedFileBase UploadImage)
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
 
             if (menu.ParentMenu < 0)
                 menu.ParentMenu = null;
+
+            if (UploadImage == null)
+            { }
+
+            else if (UploadImage.ContentLength > 0)
+            {
+                string ImageFileName = Path.GetFileName(UploadImage.FileName);
+                string FolderPath = Path.Combine(Server.MapPath("~/Resources/files/Product/"), ImageFileName);
+                UploadImage.SaveAs(FolderPath);
+                menu.Image = "/Resources/files/Product/" + ImageFileName;
+            }
 
             this.menuService.Insert(menu);
             return RedirectToAction("Index");
@@ -59,13 +71,22 @@ namespace Web.Watch.Areas.Administrator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(MenuDto menu)
+        public ActionResult Update(MenuDto menu, HttpPostedFileBase UploadImage)
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
 
             if (menu.ParentMenu < 0)
                 menu.ParentMenu = null;
+
+            if (UploadImage == null) { }
+            else if (UploadImage.ContentLength > 0)
+            {
+                string ImageFileName = Path.GetFileName(UploadImage.FileName);
+                string FolderPath = Path.Combine(Server.MapPath("~/Resources/files/Product/"), ImageFileName);
+                UploadImage.SaveAs(FolderPath);
+                menu.Image = "/Resources/files/Product/" + ImageFileName;
+            }
 
             this.menuService.Update(menu.Id, menu);
             return RedirectToAction("Index");

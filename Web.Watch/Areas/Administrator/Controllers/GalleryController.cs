@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,15 +33,30 @@ namespace Web.Watch.Areas.Administrator.Controllers
             return View();
         }
 
+        public ActionResult AddImage()
+        {
+
+            return View();
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(GalleryDto gallery)
+        public ActionResult Add(GalleryDto gallery, HttpPostedFileBase UploadImage)
         {
             if (!this.CheckAuth())
                 return this.RedirectToLogin();
-
-            GalleryService galleryService = new GalleryService();
-            galleryService.Insert(gallery);
+            if (UploadImage == null)
+                return RedirectToAction("Index");
+            if (UploadImage.ContentLength > 0)
+            {
+                string ImageFileName = Path.GetFileName(UploadImage.FileName);
+                string FolderPath = Path.Combine(Server.MapPath("~/Resources/files/Gallery/"), ImageFileName);
+                UploadImage.SaveAs(FolderPath);
+                gallery.Image = "/Resources/files/Gallery/" + ImageFileName;
+                GalleryService galleryService = new GalleryService();
+                galleryService.Insert(gallery);
+            }
             return RedirectToAction("Index");
         }
 

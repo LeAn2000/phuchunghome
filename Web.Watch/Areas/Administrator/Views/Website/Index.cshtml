@@ -10,7 +10,7 @@
 
 <script src="~/Areas/Administrator/Plugins/ckfinder/ckfinder.js"></script>
 
-<form action="/Administrator/Website" class="container" method="post">
+<form action="/Administrator/Website" class="container" enctype="multipart/form-data" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" name="Id" value="@Model.Id" />
     <section class="content">
@@ -19,14 +19,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group text-center">
                                             <label>Logo </label>
                                             <img id="img" src="@Model.Logo" class="img-thumbnail" />
                                             <input id="inpImage" type="hidden" name="Logo" value="@Model.Logo" />
-                                            <button type="button" id="button-upload" class="btn btn-success mt-3 btn-sm">Tải ảnh lên</button>
+                                            <input class="btn btn-success mt-3 btn-sm" id="fileName" type="file" name="logos" accept=".jpg,.jpeg,.png" onchange="validateFileType()" value="Tải ảnh lên" />
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-md-offset-4" style="margin-top:20px">
@@ -34,12 +34,13 @@
                                             <label>Favicon</label>
                                             <img id="imgFavicon" src="@Model.Favicon" class="img-thumbnail" />
                                             <input id="inpImageFavicon" type="hidden" name="Favicon" value="@Model.Favicon" />
-                                            <button type="button" id="button-upload-favicon" class="btn btn-success mt-3 btn-sm">Upload</button>
+                                            <input class="btn btn-success mt-3 btn-sm" id="fileName1" type="file" name="favicons" accept=".jpg,.jpeg,.png" onchange="validateFileType1()" value="Tải ảnh lên" />
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -169,5 +170,27 @@
             $("#imgFavicon").attr("src", fileUrl)
         }
     })
+    function validateFileType() {
+        var fileName = document.getElementById("fileName").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            document.getElementById('img').style.display = 'none';
+        } else {
+            alert("Tệp này không được xem là một hình");
+            $("#fileName").val('');
+        }
+    }
+    function validateFileType1() {
+        var fileName = document.getElementById("fileName1").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            document.getElementById('imgFavicon').style.display = 'none';
+        } else {
+            alert("Tệp này không được xem là một hình");
+            $("#fileName1").val('');
+        }
+    }
 </script>
 

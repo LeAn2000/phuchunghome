@@ -11,7 +11,7 @@
 
 <script src="~/Areas/Administrator/Plugins/ckfinder/ckfinder.js"></script>
 
-<form action="/Administrator/Menu/Update" class="container" method="post">
+<form action="/Administrator/Menu/Update" class="container" enctype="multipart/form-data" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" name="Id" value="@Model.Id" />
     <section class="content">
@@ -23,7 +23,7 @@
                             <label>Hình ảnh</label>
                             <img id="img" src="@Model.Image" class="img-thumbnail" />
                             <input id="inpImage" type="hidden" name="Image" value="@Model.Image" />
-                            <button type="button" id="button-upload" class="btn btn-success mt-3 btn-sm">Tải ảnh lên</button>
+                            <input class="btn btn-success mt-3 btn-sm" id="fileName" type="file" name="uploadImage" accept=".jpg,.jpeg,.png" onchange="validateFileType()" />
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -104,5 +104,16 @@
             $("#img").attr("src", fileUrl)
         }
     })
+    function validateFileType() {
+        var fileName = document.getElementById("fileName").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            document.getElementById('img').style.display = 'none';
+        } else {
+            alert("Tệp này không được xem là một hình");
+            $("#fileName").val('');
+        }
+    }
 </script>
 

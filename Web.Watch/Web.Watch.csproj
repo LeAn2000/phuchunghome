@@ -48,6 +48,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKFinder, Version=2.6.0.2792, Culture=neutral, PublicKeyToken=579e7adc719a1423, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Areas\Administrator\Plugins\plugins\Lis\CKFinder.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -3036,6 +3040,7 @@
     <Content Include="Plugins\Image\src\img\loader.gif" />
     <Content Include="Plugins\Image\src\js\jquery.swipebox.js" />
     <Content Include="Plugins\Image\src\js\jquery.swipebox.min.js" />
+    <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <Content Include="Resources\Images\bg-auth.jpg" />
     <Content Include="Resources\Images\dh.jpg" />
     <Content Include="Resources\Images\gallery.jpg" />
@@ -3485,6 +3490,7 @@
     <Content Include="Plugins\Bootrapnew\scss\bootstrap\scss\_variables.scss" />
     <Content Include="Plugins\Bootrapnew\scss\style.scss" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Home\Introduce.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Promotion.cshtml" />

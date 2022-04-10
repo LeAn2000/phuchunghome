@@ -3279,6 +3279,7 @@
     <Folder Include="Areas\Administrator\Plugins\plugins\Lis\" />
     <Folder Include="Areas\Administrator\Views\Base\" />
     <Folder Include="Models\" />
+    <Folder Include="Resources\files\Gallery\" />
     <Folder Include="Resources\_thumbs\Files\website\" />
     <Folder Include="Scripts\" />
   </ItemGroup>

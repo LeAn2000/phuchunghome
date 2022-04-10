@@ -124,12 +124,13 @@ namespace Web.Core.Service
                         ProductImage = product.Image,
                         ProductName = product.Name,
                         Qty = x.Qty,
-                        Attribute = "" 
+                        Attribute = "" ,
+                        
                     });
                 });
 
                 order.OrderDetails = orderDetails;
-                order.TotalAmount = orderDetails.Sum(x => x.Qty * x.ProductDiscountPrice);
+                order.TotalAmount = orderDetails.Sum(x => x.Qty * x.ProductPrice);
 
                 context.Orders.Add(order);
 

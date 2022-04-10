@@ -92,8 +92,37 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
-                var query = context.Products
-                    .Where(x => x.Status == 10 && x.MenuId == menuId);
+                var query = from x in context.Products
+                            where x.MenuId == menuId
+                            select new ProductDto()
+                            {
+                                Id = x.Id,
+                                Alias = x.Alias,
+                                DiscountPercent = x.DiscountPercent,
+                                DiscountPrice = x.DiscountPrice,
+                                Image = x.Image,
+                                Price = x.Price,
+                                Name = x.Name
+                            };
+                if (!query.Any())
+                {
+                    var checkmenu = context.Menus.Where(x => x.ParentMenu == menuId);
+                    var query1 = from x in context.Products
+                                 join l in checkmenu on x.MenuId equals l.Id
+                                 select new ProductDto()
+                                 {
+                                     Id = x.Id,
+                                     Alias = x.Alias,
+                                     DiscountPercent = x.DiscountPercent,
+                                     DiscountPrice = x.DiscountPrice,
+                                     Image = x.Image,
+                                     Price = x.Price,
+                                     Name = x.Name
+                                 };
+
+                    query = query1;
+                }
+
                 if (!string.IsNullOrWhiteSpace(orderBy))
                 {
                     switch (orderBy)
@@ -167,7 +196,7 @@ namespace Web.Core.Service
             }
         }
 
-        public virtual List<ProductDto> Search(string keySearch, string orderBy, string Typeid, string price, ref int totalRecord, int page = 1, int pageSize = 1)
+        public virtual List<ProductDto> Search(string keySearch, string orderBy, string Typeid, string price, ref int totalRecord, int page = 1, int pageSize = 100000)
         {
             if (string.IsNullOrWhiteSpace(keySearch))
                 keySearch = null;
@@ -179,8 +208,7 @@ namespace Web.Core.Service
                 //    .Where(x => keySearch == null || x.Name.Contains(keySearch));
                 var query = from p in context.Products
                             join m in context.Menus on p.MenuId equals m.Id
-                            where p.Status == 10
-                            where p.Name.Contains(keySearch)
+                            //where p.Status == 10
                             select new
                             {
                                 Id = p.Id,
@@ -191,10 +219,41 @@ namespace Web.Core.Service
                                 Price = p.Price,
                                 Name = p.Name,
                                 ParentName = m.Name
-
                             };
+
+                if (!string.IsNullOrEmpty(keySearch))
+                {
+                    var checkproduct = context.ProductAttributes.Where(x => x.ValueString.Contains(keySearch)).Select(x=>x.ProductId).Distinct();
+                    if (checkproduct.Any())
+                    {
+                        //var query1 = from p in context.Products
+                        //            join m in context.Menus on p.MenuId equals m.Id
+                        //            join md in checkproduct on p.Id equals md
+                        //            select new
+                        //            {
+                        //                Id = p.Id,
+                        //                Alias = p.Alias,
+                        //                DiscountPercent = p.DiscountPercent,
+                        //                DiscountPrice = p.DiscountPrice,
+                        //                Image = p.Image,
+                        //                Price = p.Price,
+                        //                Name = p.Name,
+                        //                ParentName = m.Name
+                        //            };
+                        //query = query1;
+
+                        query = query.Where(x => checkproduct.Contains(x.Id));
+                    }
+                    else
+                        query = query.Where(x => x.Name.Contains(keySearch));
+                }
+                    
+                                            
                 if (!string.IsNullOrWhiteSpace(Typeid))
-                    query = query.Where(x => x.ParentName.Contains(Typeid));
+                {
+                    var checkproduct = context.ProductAttributes.Where(x => x.ValueString.Contains(Typeid)).Select(x => x.ProductId).Distinct();
+                        query = query.Where(x=>checkproduct.Contains(x.Id));
+                }
 
                 //query = query.OrderBy(x => x.Price);
                 //query = query.Where(x => x.Price > 10000000);
@@ -263,8 +322,11 @@ namespace Web.Core.Service
         public virtual List<string> GetBranch()
         {
             var list = new List<string>();
-            list.Add("Canzy");
-            list.Add("Erosun");
+            using (var context = new MyContext())
+            {
+                var data = context.ProductAttributes.Where(x => x.AttributeId == 1).Select(x => x.ValueString).Distinct();
+                list.AddRange(data);
+            }
             return list;
         }
 

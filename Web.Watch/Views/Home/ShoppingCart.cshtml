@@ -6,7 +6,7 @@
 }
 <div class="container-fluid bg-secondary">
     <div class="d-flex flex-column align-items-center  justify-content-center" style="min-height: 80px">
-        
+
         <div class="d-inline-flex">
             <p class="m-0"><a href="/" class="text-danger">Trang chủ</a></p>
             <p class="m-0 px-2">-</p>
@@ -59,30 +59,67 @@
                                                 </a>
                                             </td>
                                             <td class="align-middle">
-                                                <b class="">@(DataHelper.ToCurrency(item.ProductDiscountPrice))</b>
+                                                @{
+                                                    if (item.ProductDiscountPrice == 0)
+                                                    {
+                                                        <b class="">@(DataHelper.ToCurrency(item.ProductPrice))</b>
+                                                    }
+                                                    else
+                                                    {
+                                                        <b class="">@(DataHelper.ToCurrency(item.ProductDiscountPrice))</b>
+                                                    }
+                                                }
+
                                             </td>
                                             <td class="align-middle">
                                                 <div class="mb-1 text-center">
-                                                    <input type="number" min="0" value="@item.Qty" name="products[@i].Qty"
+                                                    <input type="number" min="0" max="10" value="@item.Qty" name="products[@i].Qty"
                                                            class="form-control form-control-sm" style="max-width:80px">
                                                 </div>
-                                                <button type="submit" class="btn btn-light text-center btn-sm">
+                                                <button type="submit" class="btn btn-outline-danger text-center btn-sm">
                                                     <span class="text-nowrap">Cập nhật</span>
                                                 </button>
                                             </td>
                                             <td class="align-middle">
-                                                <b>@(DataHelper.ToCurrency(item.ProductDiscountPrice * item.Qty))</b>
+                                                @{
+                                                    if (item.ProductDiscountPrice == 0)
+                                                    {
+                                                        <b>@(DataHelper.ToCurrency(item.ProductPrice * item.Qty))</b>
+                                                    }
+                                                    else
+                                                    {
+                                                        <b>@(DataHelper.ToCurrency(item.ProductDiscountPrice * item.Qty))</b>
+                                                    }
+                                                }
+
                                             </td>
                                         </tr>
                                     }
+
+
+
                                     <tr>
                                         <td class="text-right" colspan="4">
                                             <h5>Tổng tiền</h5>
                                         </td>
                                         <td>
+                                            @{
+                                                double total = 0;
+                                                foreach (var item in Model)
+                                                {
+                                                    if (item.ProductDiscountPrice == 0)
+                                                    {
+                                                        total = total + (double)(item.ProductPrice * item.Qty);
+                                                    }
+                                                    else
+                                                    {
+                                                        total = total + (double)(item.ProductDiscountPrice * item.Qty);
+                                                    }
+                                                }
+
+                                            }
                                             <h5 style="color:red">
-                                                @(DataHelper.ToCurrency(Model.Sum(x =>
-                                            x.ProductDiscountPrice * x.Qty)))
+                                                @(DataHelper.ToCurrency(total))
                                             </h5>
                                         </td>
                                     </tr>
@@ -103,15 +140,16 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between pb-4">
                                         <input style="border-radius: 10px;" class="form-control py-4"
-                                               type="text" placeholder="Họ tên (*)" name="Customer.FullName" value="" required />
+                                               type="text" placeholder="Họ tên (*)" name="Customer.FullName" value="" required oninvalid="this.setCustomValidity('Bạn cần nhập họ tên')" onchange="this.setCustomValidity('')" />
                                     </div>
                                     <div class="d-flex justify-content-between pb-4">
                                         <input style="border-radius: 10px;" class="form-control py-4"
-                                               type="text" placeholder="Số điện thoại (*)" name="Customer.PhoneNumber" value="" required />
+                                               type="text" placeholder="Số điện thoại (*)" name="Customer.PhoneNumber" value="" pattern="^((09(\d){8})|(086(\d){7})|(088(\d){7})|(089(\d){7})|(01(\d){9})|(02(\d){9}))$" 
+                                               oninvalid="this.setCustomValidity('Số điện thoại không chính xác')" onchange="this.setCustomValidity('')" />
                                     </div>
                                     <div class="d-flex justify-content-between pb-4">
                                         <input type="text" style="border-radius: 10px;" class="form-control py-4"
-                                               placeholder="Địa chỉ liên hệ (*)" name="Customer.Address" value="" required />
+                                               placeholder="Địa chỉ liên hệ (*)" name="Customer.Address" value=""  required oninvalid="this.setCustomValidity('Bạn cần nhập địa chỉ liên hệ')" onchange="this.setCustomValidity('')" />
                                     </div>
                                     <div class="d-flex justify-content-between pb-4">
                                         <input type="text" style="border-radius: 10px;" class="form-control py-4"

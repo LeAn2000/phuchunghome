@@ -38,7 +38,30 @@
     @RenderBody()
     @Html.Partial("~/Views/Shared/_Footer.cshtml", website)
 
+    <style>
+        .back-to-top1 {
+            position: fixed;
+            display: none;
+            right: 30px;
+            bottom: 30px;
+            z-index: 11;
+            animation: action 1s infinite alternate;
+            border-radius: 50%;
+            right: unset !important;
+            bottom: unset !important;
+            display: inline;
+        }
+    </style>
+
     <a href="#" class="btn btn-danger back-to-top" style="border-radius: 50%;"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+    <a href="/Home/Contact" class=" back-to-top1 ml-2" style="top: 428px !important"><img class="w-100" src="https://khanhvyhome.com.vn/image/tracking/widget_icon_messenger.svg" /></a>
+    <a href="https://goo.gl/maps/JdGTUQszPvYskdd37" target="_blank" class=" back-to-top1 ml-2" style="top: 484px !important"><img class="w-100" src="https://khanhvyhome.com.vn/image/tracking/widget_icon_map.svg" /></a>
+    <a href="https://zalo.me/0936791505" target="_blank" class=" back-to-top1 ml-2" style="top: 542px !important"><img class="w-100" src="https://khanhvyhome.com.vn/image/tracking/widget_icon_zalo.svg" /></a>
+    <a href="tel:0936791505" class=" back-to-top1 ml-2 " style=" top: 600px !important"><img class="w-100" src="https://khanhvyhome.com.vn/image/tracking/widget_icon_click_to_call.svg" /></a>
+
 
     <script src="~/Plugins/Image/lib/jquery-3.5.1.min.js"></script>
     <script src="~/Plugins/Image/src/js/jquery.swipebox.js"></script>

@@ -87,7 +87,7 @@
                                                                     <td>@(DataHelper.ToCurrency(item.ProductPrice))</td>
                                                                     <td>@(DataHelper.ToCurrency(item.ProductDiscountPrice))</td>
                                                                     <td>@(item.Qty)</td>
-                                                                    <td>@(DataHelper.ToCurrency(item.Qty * item.ProductDiscountPrice))</td>
+                                                                    <td>@(DataHelper.ToCurrency(item.Qty * item.ProductPrice ))</td>
                                                                 </tr>
                                                             }
                                                             <tr>
@@ -97,7 +97,7 @@
                                                                 <td>
                                                                     <h4 style="color:red">
                                                                         <strong>
-                                                                            @(DataHelper.ToCurrency(Model.OrderDetails.Sum(x => x.ProductDiscountPrice * x.Qty)))
+                                                                            @(DataHelper.ToCurrency(Model.OrderDetails.Sum(x => x.Qty * x.ProductPrice)))
                                                                         </strong>
                                                                     </h4>
                                                                 </td>

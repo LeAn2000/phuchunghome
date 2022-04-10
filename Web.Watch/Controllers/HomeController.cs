@@ -183,7 +183,7 @@ namespace Web.Watch.Controllers
             return View(this.articleService.GetByAlias(alias));
         }
 
-        public ActionResult Search(string q = "", string orderBy = "name-asc", string Typeid = "", string price = "", int page = 1, int pageSize = 12)
+        public ActionResult Search(string q = "", string orderBy = "name-asc", string Typeid = "", string price = "", int page = 1, int pageSize = 50)
         {
             this.SetSEO_Main();
             ViewBag.q = q;

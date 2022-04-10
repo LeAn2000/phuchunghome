@@ -27,7 +27,7 @@
                     @foreach (var item in listOrderName)
                     {
                         <div  class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" id="@item.value" class="custom-control-input" value="@item.value" @(ViewBag.orderBy == @item.value ? "checked" : "") onclick='window.location.assign("/@Model.Alias?page=@ViewBag.Page&orderBy=@item.value&Typeid=@ViewBag.Typeid&price=@ViewBag.Filterprice")' />
+                            <input type="checkbox" id="@item.value" class="custom-control-input" value="@item.value" @(ViewBag.orderBy == @item.value ? "checked" : "") onclick='window.location.assign("/@Model.Alias?page=@ViewBag.Page&orderBy=@item.value")' />
                             <label class="custom-control-label" for="@item.value">@item.Name</label>
                         </div>
                     }

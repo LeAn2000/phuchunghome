@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Web.Core.Enum;
 
 namespace Web.Core.Dto
 {
@@ -17,6 +18,7 @@ namespace Web.Core.Dto
         public string PaymentMethod { get; set; }
         public string Note { get; set; }
         public DateTime Created { get; set; }
+        public IsView IsView { get; set; }
 
         public CustomerDto Customer { get; set; }
         public List<OrderDetailDto> OrderDetails { get; set; }

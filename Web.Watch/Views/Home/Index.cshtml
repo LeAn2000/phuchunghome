@@ -111,26 +111,30 @@
     <div class="row px-xl-5">
         <div class="col">
             <div class="owl-carousel related-carousel">
-                @foreach (var item in sellings)
+                @for (int i = 0; i < sellings.Count; i++)
                 {
-                    @Html.Partial("~/Views/Partial/_pProduct.cshtml", item)
+                    if (i < 16)
+                    {
+                        @Html.Partial("~/Views/Partial/_pProduct.cshtml", sellings[i])
+                    }
+                    else { break; }
                 }
             </div>
         </div>
     </div>
 </div>
 <div class="container-fluid py-2 mt-3">
-    @foreach (var menu in menus)
+    @for(int i = 0; i<menus.Count; i++)
     {
-        if (menu.Products.Count > 0)
+        if (menus[i].Products.Count > 0)
         {
             <div class="container-fluid py-2 mt-4" style="margin-bottom: 10px">
                 <div class="row">
                     <div class="col-lg-9 col-md-8 text-left">
-                        <h5 class=""> @menu.Name</h5>
+                        <h5 class=""> @menus[i].Name</h5>
                     </div>
                     <div class="col-lg-3 col-md-4  text-right">
-                        <a href="/@menu.Alias" class="text-danger"> Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
+                        <a href="/@menus[i].Alias" class="text-danger"> Xem tất cả <i class="fa-solid fa-angles-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -138,9 +142,16 @@
             <div class="row px-xl-5">
                 <div class="col">
                     <div class="owl-carousel related-carousel">
-                        @foreach (var product in menu.Products)
+                        @for (int j = 0; j < menus[i].Products.Count; j++)
                         {
-                            @Html.Partial("~/Views/Partial/_pProduct.cshtml", product)
+                            if (j < 8)
+                            {
+                                @Html.Partial("~/Views/Partial/_pProduct.cshtml", menus[i].Products[j])
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                     </div>
                 </div>

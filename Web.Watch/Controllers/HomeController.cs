@@ -37,7 +37,7 @@ namespace Web.Watch.Controllers
             return View();
         }
 
-        public ActionResult Category(string alias, string orderBy = "name-asc", int page = 1, int pageSize = 12)
+        public ActionResult Category(string alias, string orderBy = "name-asc", int page = 1, int pageSize = 100)
         {
             MenuDto menu = this.menuService.GetByAlias(alias);
             int totalRecord = 0;

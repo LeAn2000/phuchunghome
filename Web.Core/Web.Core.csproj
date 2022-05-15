@@ -92,6 +92,7 @@
     <Compile Include="Dto\ReviewDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Dto\WebsiteDto.cs" />
+    <Compile Include="Enum\IsView.cs" />
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\Attribute.cs" />
     <Compile Include="Model\AuditLog.cs" />

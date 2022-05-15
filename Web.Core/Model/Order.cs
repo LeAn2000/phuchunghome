@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Web.Core.Enum;
 
 namespace Web.Core.Model
 {
@@ -19,6 +17,7 @@ namespace Web.Core.Model
         public string PaymentMethod { get; set; }
         public string Note { get; set; }
         public DateTime Created { get; set; }
+        public IsView IsView { get; set; } = IsView.UnView;
 
         public virtual Customer Customer { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

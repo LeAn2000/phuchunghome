@@ -19,6 +19,7 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
+                var c = context.Orders.ToList();
                 return context.Orders
                     .OrderByDescending(x => x.OrderDate)
                     .Select(x => new OrderDto()
@@ -32,6 +33,7 @@ namespace Web.Core.Service
                             FullName = x.Customer.FullName,
                             PhoneNumber = x.Customer.PhoneNumber,
                         },
+                        IsView = x.IsView,
                         Note = x.Note,
                         OrderDate = x.OrderDate,
                         OrderTime = x.OrderTime,
@@ -47,7 +49,8 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
-                return context.Orders
+               UpdateIsView(key);
+               return  context.Orders
                     .Where(x => x.Id == key)
                     .Select(x => new OrderDto()
                     {
@@ -61,6 +64,7 @@ namespace Web.Core.Service
                             PhoneNumber = x.Customer.PhoneNumber,
                         },
                         Note = x.Note,
+                        IsView = x.IsView,
                         OrderDate = x.OrderDate,
                         OrderTime = x.OrderTime,
                         PaymentMethod = x.PaymentMethod,
@@ -86,6 +90,18 @@ namespace Web.Core.Service
                         }).ToList()
                     })
                     .FirstOrDefault();
+            }
+        }
+        public virtual void UpdateIsView(int key)
+        {
+            using (var context = new MyContext())
+            {
+                Order order = context.Orders
+                   .FirstOrDefault(x => x.Id == key);
+
+                order.IsView = Enum.IsView.View;
+
+                context.SaveChanges();
             }
         }
 
@@ -132,6 +148,56 @@ namespace Web.Core.Service
                 order.OrderDetails = orderDetails;
                 order.TotalAmount = orderDetails.Sum(x => x.Qty * x.ProductPrice);
 
+                context.Orders.Add(order);
+
+                context.SaveChanges();
+
+                return entity;
+            }
+        }
+
+        public virtual OrderDto InsertInOrder(OrderDto entity)
+        {
+            using (var context = new MyContext())
+            {
+                DateTime dateNow = DateTime.Now;
+                Order order = new Order()
+                {
+                    OrderDate = dateNow,
+                    Customer = new Customer()
+                    {
+                        Code = Guid.NewGuid().ToString("N"),
+                        Address = entity.Customer.Address,
+                        Email = entity.Customer.Email,
+                        FullName = entity.Customer.FullName,
+                        PhoneNumber = entity.Customer.PhoneNumber
+                    },
+                    Note = entity.Note,
+                    Status = 10,
+                    Created = dateNow,
+                };
+
+                List<OrderDetail> orderDetails = new List<OrderDetail>();
+                entity.OrderDetails.ForEach(x =>
+                {
+                    Product product = context.Products.FirstOrDefault(y => y.Id == x.ProductId);
+
+                    orderDetails.Add(new OrderDetail()
+                    {
+                        ProductId = product.Id,
+                        ProductDiscountPercent = product.DiscountPercent,
+                        ProductDiscountPrice = x.ProductDiscountPrice?? product.DiscountPrice,
+                        ProductPrice = x.ProductPrice?? product.Price,
+                        ProductImage = product.Image,
+                        ProductName = product.Name,
+                        Qty = x.Qty,
+                        Attribute = "",
+
+                    });
+                });
+
+                order.OrderDetails = orderDetails;
+                order.TotalAmount = orderDetails.Sum(x => x.Qty * (x.ProductDiscountPrice == 0? x.ProductPrice : x.ProductDiscountPrice));
                 context.Orders.Add(order);
 
                 context.SaveChanges();

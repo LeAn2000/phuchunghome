@@ -92,35 +92,40 @@ namespace Web.Core.Service
         {
             using (var context = new MyContext())
             {
-                var query = from x in context.Products
-                            where x.MenuId == menuId
-                            select new ProductDto()
-                            {
-                                Id = x.Id,
-                                Alias = x.Alias,
-                                DiscountPercent = x.DiscountPercent,
-                                DiscountPrice = x.DiscountPrice,
-                                Image = x.Image,
-                                Price = x.Price,
-                                Name = x.Name
-                            };
-                if (!query.Any())
-                {
-                    var checkmenu = context.Menus.Where(x => x.ParentMenu == menuId);
-                    var query1 = from x in context.Products
-                                 join l in checkmenu on x.MenuId equals l.Id
-                                 select new ProductDto()
-                                 {
-                                     Id = x.Id,
-                                     Alias = x.Alias,
-                                     DiscountPercent = x.DiscountPercent,
-                                     DiscountPrice = x.DiscountPrice,
-                                     Image = x.Image,
-                                     Price = x.Price,
-                                     Name = x.Name
-                                 };
 
-                    query = query1;
+                var checkmenu = context.Menus.Where(x => x.ParentMenu == menuId).Select(x=>x.Id).ToList();
+                List<ProductDto> query = new List<ProductDto>();
+
+                if (checkmenu.Any())
+                {
+
+                    query = (from x in context.Products
+                             where checkmenu.Contains((int)x.MenuId)
+                             select new ProductDto()
+                             {
+                                 Id = x.Id,
+                                 Alias = x.Alias,
+                                 DiscountPercent = x.DiscountPercent,
+                                 DiscountPrice = x.DiscountPrice,
+                                 Image = x.Image,
+                                 Price = x.Price,
+                                 Name = x.Name
+                             }).ToList();
+                }
+                else
+                {
+                    query = (from x in context.Products
+                             where x.MenuId == menuId
+                             select new ProductDto()
+                             {
+                                 Id = x.Id,
+                                 Alias = x.Alias,
+                                 DiscountPercent = x.DiscountPercent,
+                                 DiscountPrice = x.DiscountPrice,
+                                 Image = x.Image,
+                                 Price = x.Price,
+                                 Name = x.Name
+                             }).ToList();
                 }
 
                 if (!string.IsNullOrWhiteSpace(orderBy))
@@ -128,16 +133,16 @@ namespace Web.Core.Service
                     switch (orderBy)
                     {
                         case "name-asc":
-                            query = query.OrderBy(x => x.Name);
+                            query = query.OrderBy(x => x.Name).ToList();
                             break;
                         case "name-desc":
-                            query = query.OrderByDescending(x => x.Name);
+                            query = query.OrderByDescending(x => x.Name).ToList();
                             break;
                         case "price-asc":
-                            query = query.OrderBy(x => x.Price);
+                            query = query.OrderBy(x => x.Price).ToList();
                             break;
                         case "price-desc":
-                            query = query.OrderByDescending(x => x.Price);
+                            query = query.OrderByDescending(x => x.Price).ToList();
                             break;
                     }
                 }

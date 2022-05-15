@@ -3506,6 +3506,7 @@
     <Content Include="Areas\Administrator\Plugins\Bootrapnew\vendor\fontawesome-free\webfonts\fa-solid-900.woff2" />
     <Content Include="Areas\Administrator\Plugins\Bootrapnew\vendor\jquery\jquery.min.map" />
     <Content Include="Areas\Administrator\Plugins\Bootrapnew\vendor\jquery\jquery.slim.min.map" />
+    <Content Include="Areas\Administrator\Views\Order\Add.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />

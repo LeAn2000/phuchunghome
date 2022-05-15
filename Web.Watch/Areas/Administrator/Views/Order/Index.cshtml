@@ -1,5 +1,6 @@
 ﻿@using Web.Core.Dto;
 @using Web.Core.Util;
+@using Web.Core.Enum;
 @model List<OrderDto>
 @{
     ViewBag.Title = "Danh sách đơn hàng";
@@ -8,7 +9,12 @@
 <script>
     $("#menu_order").addClass("menu_active");
 </script>
-
+<a href="/Administrator/Order/Add" class="btn btn-primary btn-sm btn-icon-split ml-4 mb-3">
+    <span class="icon text-white-50">
+        <i class="fa fa-plus"></i>
+    </span>
+    <span class="text">Thêm mới</span>
+</a>
 <div class="container-fluid">
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -28,6 +34,7 @@
                             <th>Địa chỉ liên hệ</th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
+                            <th>Trạng thái xem</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -40,6 +47,7 @@
                             <th>Địa chỉ liên hệ</th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
+                            <th>Trạng thái xem</th>
                             <th></th>
                         </tr>
                     </tfoot>
@@ -67,6 +75,17 @@
                                     {
                                 <span class="badge rounded-pill bg-danger text-white">Đã hủy</span>
 
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.IsView == IsView.UnView)
+                                    {
+                                        <span class="badge rounded-pill bg-warning text-dark ">Chưa xem</span>
+
+                                    }
+                                    else if (item.IsView == IsView.View)
+                                    {
+                                        <span class="badge rounded-pill bg-success text-white">Đã xem</span>
                                     }
                                 </td>
                                 <td>

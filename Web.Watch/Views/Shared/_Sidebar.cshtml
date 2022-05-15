@@ -90,35 +90,52 @@
         display: block;
     }
 
-
-    .clearfix {
-        *zoom: 1;
+    .menu {
+        position: relative;
     }
 
-        .clearfix:before,
-        .clearfix:after {
-            content: " ";
-            display: table;
-        }
 
-        .clearfix:after {
-            clear: both;
-        }
-
-    ul.list {
-        padding: 10px;
+    .ulmain {
+        width: 300px;
+        margin: 0;
+        color: black;
         list-style: none;
+        padding: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: 550px;
+        background-color: white;
     }
 
-        ul.list li {
-            display: inline-block;
-        }
 
-    img {
+
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .sub-menu {
+        display: none;
+        width: 880px;
+        height: 550px;
+        background-color: whitesmoke;
+        list-style: none;
+        padding: 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .test-menu:hover .sub-menu {
+        display: block;
+        position: absolute;
+        left: 300px;
+        top: 0px;
+    }
+
+    #imgmenu {
         vertical-align: inherit;
-        width: 30px;
-        height: 30px;
-        height: auto !important;
+        width: 18px;
+        height: 18px;
     }
 </style>
 <div class="container-fluid" style="background: #dc3545; padding-top: 7px;">
@@ -131,33 +148,32 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-content1" style="z-index:1000000000">
-                        @foreach (var menu in menus)
-                        {
-                            if (menu.SubMenus == null || menu.SubMenus.Count == 0)
-                            {
-                                <a href="/@menu.Alias"><img src="@menu.Image" /> @menu.Name</a>
-                            }
-                            else
-                            {
+                        <div class="menu">
+                            <ul class="ulmain">
+                                @foreach (var menu in menus)
+                                {
+                                    if (menu.SubMenus == null || menu.SubMenus.Count == 0)
+                                    {
+                                        <li><a href="/@menu.Alias"><img id="imgmenu" src="@menu.Image" class="mr-2" /> @menu.Name</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="test-menu">
+                                            <a href="/@menu.Alias"><img id="imgmenu" src="@menu.Image" class="mr-2" /> @menu.Name <i style="float:right" class="fa fa-caret-right"></i></a>
+                                            <ul class="sub-menu">
+                                                @foreach (var item in menu.SubMenus)
+                                                {
+                                                    <li>
+                                                <a href="/@item.Alias"> @item.Name</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                }
 
-                                <div class="dropdown-sub1">
-                                    <a href="/@menu.Alias"><img src="@menu.Image" /> @menu.Name <i class="fa fa-caret-right"></i></a>
-                                    <div class="dropdown-content-sub1">
-
-                                        <ul class="list clearfix">
-                                            @foreach (var item in menu.SubMenus)
-                                            {
-                                                <li><a href="/@item.Alias"> @item.Name</a></li>
-
-                                            }
-
-
-                                        </ul>
-
-                                    </div>
-                                </div>
-                            }
-                        }
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

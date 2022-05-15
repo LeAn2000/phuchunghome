@@ -78,7 +78,7 @@
     z-index: 1;
     width: 920px;
     left: 296px;
-    /*block width*/
+    block width
 }
 
 .dropdown-content1 {
@@ -137,12 +137,7 @@ ul.list {
         display: inline-block;
     }
 
-img {
-    vertical-align: inherit;
-    width: 30px;
-    height: 30px;
-    height: auto !important;
-}
+
 
 
 

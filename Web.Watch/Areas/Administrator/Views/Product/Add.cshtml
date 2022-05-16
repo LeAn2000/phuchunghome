@@ -58,18 +58,25 @@
                                             <input type="text" name="Name" class="form-control input-sm" required />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Giá niêm yết <span class="text-danger">(*)</span></label>
-                                            <input type="number" name="Price" value="0" min="0" class="form-control input-sm" required />
+                                            <input id="Price" type="number" name="Price" value="0" min="0" class="form-control input-sm" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>(%)khuyến mãi</label>
+                                            <input id="DiscountPercent" type="text" name="DiscountPercent" value="0.0" class="form-control input-sm" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Giá khuyến mãi</label>
-                                            <input type="number" name="DiscountPrice" value="0" min="0" class="form-control input-sm" />
+                                            <input id="DiscountPrice" type="number" name="DiscountPrice" value="0" min="0" class="form-control input-sm" />
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Thứ tự hiển thị</label>
@@ -131,6 +138,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" href="#tab_3" data-toggle="tab">Chế độ bảo hành</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#tab_4" data-toggle="tab">Chế độ khuyến mãi</a>
+                                        </li>
 
                                     </ul>
                                     <div class="tab-content">
@@ -147,6 +157,11 @@
                                         <div class="tab-pane" id="tab_3">
                                             <div>
                                                 <textarea id="UserDef1" name="UserDef1" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab_4">
+                                            <div>
+                                                <textarea id="Tags" name="Tags" class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -247,6 +262,10 @@
             finder.selectActionFunction = setFileFieldMore;
             finder.popup();
         });
+        $('#DiscountPercent').blur(function () {
+            HasDiscountPrice();
+        });
+        $("#DiscountPrice").prop("readonly", true);
 
         function setFileFieldMore(fileUrl) {
             let key = new Date().getTime();
@@ -264,6 +283,7 @@
         CKEDITOR.replace('ShortDescription')
         CKEDITOR.replace('Description')
         CKEDITOR.replace('UserDef1')
+        CKEDITOR.replace('Tags')
     })
     function validateFileType() {
         var fileName = document.getElementById("fileName").value;
@@ -288,5 +308,17 @@
         }
     }
 
+
+    function HasDiscountPrice() {
+        var price = $('#Price').val();
+        var discount_percent = $('#DiscountPercent').val();
+        var discount = price * discount_percent;
+        if (price && discount) {
+            $('#DiscountPrice').val(price - discount);
+        }
+        else {
+            $('#DiscountPrice').val(0);
+        }
+    }
 </script>
 

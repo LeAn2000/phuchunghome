@@ -59,6 +59,10 @@
                     display: flex;
                     list-style: none;
                 }
+                #imagesud {
+                height:60px;
+                padding-top:10px
+                }
             </style>
             <section id="exemple" class="container-fluid text-center">
                 <div class="wrap">
@@ -68,10 +72,10 @@
                         {
                             <li class="box" style="padding-left:10px">
                                 <a href="@product.ProductImages[i].Image" class="swipebox" rel="gallery">
-                                    <img src="@product.ProductImages[i].Image" alt="image">
+                                    <img id="imagesud" src="@product.ProductImages[i].Image" alt="image">
                                 </a>
                             </li>
-}
+                        }
                     </ul>
                 </div>
             </section>
@@ -83,12 +87,10 @@
             </div>
             @if (product.DiscountPrice > 0)
             {
-                <h4 class=" mb-4">@(DataHelper.ToCurrency(product.DiscountPrice))₫ - <del class="text-muted">@(DataHelper.ToCurrency(product.Price))₫</del></h4>
-            }
+                <h4 class=" mb-4">@(DataHelper.ToCurrency(product.DiscountPrice))₫ - <del class="text-muted">@(DataHelper.ToCurrency(product.Price))₫</del></h4> }
             else
             {
-                <h4 class=" mb-4">@(DataHelper.ToCurrency(product.Price))₫</h4>
-            }
+                <h4 class=" mb-4">@(DataHelper.ToCurrency(product.Price))₫</h4>}
 
 
             <p class="mb-4">
@@ -98,7 +100,7 @@
                             @foreach (var item in product.ProductAttributes)
                             {
                                 <th>@item.Attribute.Name</th>
-                            }
+}
                         </tr>
                     </thead>
                     <tbody>
@@ -106,32 +108,27 @@
                             @foreach (var item in product.ProductAttributes)
                             {
                                 <th style="font-size: 13px">@item.ValueString</th>
-                            }
+}
                         </tr>
                     </tbody>
                 </table>
             </p>
+            <div class="row px-xl-5">
+                <div class="col">
+                    <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                        <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Chế độ khuyến mãi</a>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab-pane-1">
+                            <h4 class="mb-3">Chế độ khuyến mãi</h4>
+                            @Html.Raw(product.Tags)
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="d-flex align-items-center mb-4 pt-2">
-
                 <a href="/mua-hang/@product.Id" class="btn btn-danger px-3"><i class="fa fa-shopping-cart mr-1"></i>Mua ngay</a>
             </div>
-            <p class="mb-4">
-                <table class="table table-bordered table-striped border-primary">
-                    <thead>
-                        <tr>
-                            <td style="width:123px"><b class="text-danger">Thông tin khuyến mãi</b></td>
-                            <td>
-                           <ul>
-                               <li>sadsadas</li>
-                               <li>sadsadas</li>
-                               <li>sadsadas</li>
-                           </ul>
-                               
-                            </td>
-                        </tr>
-                    </thead>
-                </table>
-            </p>
         </div>
     </div>
     <div class="row px-xl-5">
@@ -175,7 +172,8 @@
 </div>
 
 <script src="~/Plugins/Image/lib/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">$(document).ready(function () {
+<script type="text/javascript">
+    $(document).ready(function () {
 
         /* Basic Gallery */
         $('.swipebox').swipebox();

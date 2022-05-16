@@ -21,6 +21,7 @@ namespace Web.Core.Dto
         public double? DiscountPrice { get; set; }
         public double? DiscountPercent { get; set; }
         public bool? Selling { get; set; }
+        [AllowHtml]
         public string Tags { get; set; }
         [AllowHtml]
         public string ShortDescription { get; set; }

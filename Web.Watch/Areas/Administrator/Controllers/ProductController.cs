@@ -48,6 +48,7 @@ namespace Web.Watch.Areas.Administrator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Add(ProductDto product, HttpPostedFileBase[] UploadImages, HttpPostedFileBase Images)
         {
             if (!this.CheckAuth())

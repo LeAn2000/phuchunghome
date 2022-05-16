@@ -135,8 +135,8 @@ namespace Web.Core.Service
                     {
                         ProductId = product.Id,
                         ProductDiscountPercent = product.DiscountPercent,
-                        ProductDiscountPrice = product.DiscountPrice,
-                        ProductPrice = product.Price,
+                        ProductDiscountPrice = x.ProductDiscountPrice ?? product.DiscountPrice,
+                        ProductPrice = x.ProductPrice ?? product.Price,
                         ProductImage = product.Image,
                         ProductName = product.Name,
                         Qty = x.Qty,
@@ -146,7 +146,7 @@ namespace Web.Core.Service
                 });
 
                 order.OrderDetails = orderDetails;
-                order.TotalAmount = orderDetails.Sum(x => x.Qty * x.ProductPrice);
+                order.TotalAmount = orderDetails.Sum(x => x.Qty * (x.ProductDiscountPrice == 0 ? x.ProductPrice : x.ProductDiscountPrice));
 
                 context.Orders.Add(order);
 
